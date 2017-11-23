@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="parent">
+    <div class="block">
+        <div class="draw-off">
+            <div id="container" style="width: 800px; height: 420px">
+                <canvas id="whiteBoard"></canvas>
+                <div id="status">
+                </div>
+            </div>
+            <div>
+                <img id="imgline" style="border-color: Gray; border-style: dashed; width: 32px; height: 32px"
+                     src="/images/line_dim.png" onclick="SelectTool('line'); return false;" />
+                <img id="imgpencil" style="border-color: Gray; border-style: dashed; width: 32px;
+                            height: 32px" src="/images/pencil_dim.png" onclick="SelectTool('pencil'); return false;" />
+                <img id="imgrect" style="border-color: Gray; border-style: dashed; width: 32px; height: 32px"
+                     src="/images/rect_dim.png" onclick="SelectTool('rect'); return false;" />
+                <img id="imgtext" style="border-color: Gray; border-style: dashed; width: 32px; height: 32px"
+                     src="/images/text_dim.png" onclick="SelectTool('text'); return false;" />
+                <img id="imgerase" style="border-color: Gray; border-style: dashed; width: 32px;
+                            height: 32px" src="/images/erase_dim.png" onclick="SelectTool('erase'); return false;" />
+                <ul class="pagination" style="padding-left: 0; margin-top: -5px; margin-bottom: -13px;">
+                    <li><a href="#" style="width: 32px; height: 32px; background-color: green;" onclick="SetColor('#191')"></a></li>
+                    <li><a href="#" style="width: 32px; height: 32px; background-color: red;" onclick="SetColor('red')"></a></li>
+                    <li><a href="#" style="width: 32px; height: 32px; background-color: yellow;" onclick="SetColor('yellow')"></a></li>
+                    <li><a href="#" style="width: 32px; height: 32px; background-color: blue;" onclick="SetColor('blue')"></a></li>
+                </ul>
+                <ul class="pagination" style="padding-left: 0; margin-top: -5px; margin-bottom: -13px;">
+                    <li><a href="#" style="height: 32px;" onclick="SetWidth(1)">|</a></li>
+                    <li><a href="#" style="height: 32px;" onclick="SetWidth(3)">||</a></li>
+                    <li><a href="#" style="height: 32px;" onclick="SetWidth(6)">|||</a></li>
+                </ul>
+                <img id="imgSave" style="border: 0; border-style: dashed; width: 32px; height: 32px"
+                     src="/images/save.png" onclick="SaveDrawings(); return false;" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding:15px; margin-right: 0;">
+    <div class="col-md-12" style="text-align:center;">
+        <a id="btnAdd" href="@ViewData["url"]" target="_blank" style="display:none;">Поделиться изображением</a>
+        <a id="btnStart">Начать рисовать</a>
+    </div>
+</div>
+<div style="padding: 15px; background-color: #f3f3f3;">
+    <p style="margin-bottom: 0px;">Автор: Бондаренко Д.С., Таганрог 2017</p>
+</div>
+
+<input type="hidden" id="sessinId" value="@Session.SessionID" />
+<input type="hidden" id="groupName" value="@ViewData["GroupName"]" />
+<input type="text" id="name" style="display:none;" value="@Guid.NewGuid().ToString().Substring(0,10)" />
+<div id="divMessage" style="display: none;"></div>
+
+@section scripts {
+    <script src="/Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.signalR-1.0.0-rc1.min.js"></script>
+    <script src="~/signalR/hubs"></script>
+    <script src="~/Scripts/whiteboard_1.js" type="text/javascript"></script>
+    <input type="hidden" id="userName" value="@ViewData["UserName"]" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnStart').on('click', function () {
+                JoinTo();
+                $(this).hide();
+                $('#btnAdd').show();
+                $('.draw-off').removeClass('draw-off').addClass('draw-on');
+            });
+        })
+    </script>
+}
